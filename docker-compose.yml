@@ -1,0 +1,43 @@
+version: '3.8'
+services:
+  blackdragonai-mysql:
+    image: hypriot/rpi-mysql:latest
+    container_name: blackdragonai-mysql
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    volumes:
+      - blackdragonai-db:/var/lib/mysql
+    networks:
+      - reverse-proxy-n
+
+  blackdragonai-api:
+    image: blackdragonai-api
+    container_name: blackdragonai-api
+    environment:
+      ASPNETCORE_ENVIRONMENT: Docker
+    networks:
+      - reverse-proxy-n
+  
+  # blackdragonai-web:
+  #   image: blackdragonai-web
+  #   container_name: blackdragonai-web
+  #   networks:
+  #     - reverse-proxy-n
+  
+  # blackdragonai-bot:
+  #   image: blackdragonai-bot
+  #   container_name: blackdragonai-bot
+  #   environment:
+  #     ASPNETCORE_ENVIRONMENT: Docker
+  #   networks:
+  #     - reverse-proxy-n
+
+volumes:
+  blackdragonai-db:
+
+networks:
+  reverse-proxy-n:
+    external: true
