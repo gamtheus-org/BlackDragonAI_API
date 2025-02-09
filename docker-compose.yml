@@ -21,11 +21,11 @@ services:
     networks:
       - reverse-proxy-n
   
-  # blackdragonai-web:
-  #   image: blackdragonai-web
-  #   container_name: blackdragonai-web
-  #   networks:
-  #     - reverse-proxy-n
+  blackdragonai-web:
+    image: blackdragonai-web
+    container_name: blackdragonai-web
+    networks:
+      - reverse-proxy-n
   
   # blackdragonai-bot:
   #   image: blackdragonai-bot
