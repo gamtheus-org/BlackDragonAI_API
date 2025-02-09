@@ -27,7 +27,7 @@ jobs:
           ${{secrets.APPSETTINGS}}
           EOF
 
-          docker build -t blackdragonai-api -f ./BlackDragonAIAPI/Dockerfile .
+          docker build -t blackdragonai-api -f ./BlackDragonAIAPI/Dockerfile ./BlackDragonAIAPI
 
       # Save the built Docker images as tarballs
       - name: Save Docker images to tar files
