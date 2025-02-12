@@ -24,9 +24,8 @@ namespace BlackDragonAIAPI
             {
                 try
                 {
-                    var url = $"http://{ws.Uri}:2005{endpoint}";
-                    Console.WriteLine($"URL: {url}");
-                    SendWithoutWaiting(new Uri(url));
+                    Console.WriteLine($"URL: {ws.Uri}");
+                    SendWithoutWaiting(new Uri(ws.Uri));
                 }
                 catch (Exception)
                 {
