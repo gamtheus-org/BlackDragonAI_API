@@ -33,6 +33,7 @@ services:
   blackdragonai-bot:
     image: blackdragonai-bot
     container_name: blackdragonai-bot
+    restart: on-failure
     depends_on:
       blackdragonai-api:
         condition: service_started
