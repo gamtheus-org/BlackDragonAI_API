@@ -22,27 +22,27 @@ namespace BlackDragonAIAPI.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<WebhookSubscriber>> CreateWebhookSubscriber()
+        public async Task<ActionResult<WebhookSubscriber>> CreateWebhookSubscriber(WebhookSubscription webhookSubscription)
         {
-            if ((await this._db.GetWebhookSubscribers()).Any(dbWs => dbWs.Uri.Equals(GetClientAddress())))
+            if ((await this._db.GetWebhookSubscribers()).Any(dbWs => dbWs.Uri.Equals(webhookSubscription.Url)))
                 return BadRequest(new BadRequestError("A webhook subscriber has already been created for this uri"));
-            return await AddWebhookSubscriberToDatabase();
+            return await AddWebhookSubscriberToDatabase(webhookSubscription);
         }
 
         /// <summary>
         /// Creates a webhook subscriber in an idempotent manner. Will always ensure resource exists if the request is valid
         /// </summary>
         [HttpPost("idempotent")]
-        public async Task<ActionResult<WebhookSubscriber>> CreateWebhookSubscriberIdempotent() =>
-            (await this._db.GetWebhookSubscribers()).FirstOrDefault(dbWs => dbWs.Uri.Equals(GetClientAddress())) 
-            ?? await AddWebhookSubscriberToDatabase();
+        public async Task<ActionResult<WebhookSubscriber>> CreateWebhookSubscriberIdempotent(WebhookSubscription webhookSubscription) =>
+            (await this._db.GetWebhookSubscribers()).FirstOrDefault(dbWs => dbWs.Uri.Equals(webhookSubscription.Url)) 
+            ?? await AddWebhookSubscriberToDatabase(webhookSubscription);
 
-        private async Task<WebhookSubscriber> AddWebhookSubscriberToDatabase()
+        private async Task<WebhookSubscriber> AddWebhookSubscriberToDatabase(WebhookSubscription webhookSubscription)
         {
             var ws = new WebhookSubscriber()
             {
                 Guid = Guid.NewGuid(),
-                Uri = GetClientAddress()
+                Uri = webhookSubscription.Url
             };
             return await this._db.CreateWebhookSubscriber(ws);
         }
