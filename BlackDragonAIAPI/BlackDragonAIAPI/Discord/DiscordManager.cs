@@ -18,11 +18,21 @@ namespace BlackDragonAIAPI.Discord
         private readonly DiscordSocketClient _client;
         private readonly DiscordConfig _discordConfig;
         private bool _isConnected = false;
+        public event Action<IGuildUser> UserJoinedGuild;
+        private const ulong DefaultUserRole = 730218443881578505;
         
         public DiscordManager(IOptions<DiscordConfig> discordConfig)
         {
-            this._discordConfig = discordConfig.Value;
-            this._client = new DiscordSocketClient();
+            // this._discordConfig = discordConfig.Value;
+            // this._client = new DiscordSocketClient();
+            //
+            // this.UserJoinedGuild += user =>
+            // {
+            //     Console.WriteLine($"User {user.Username} with id: {user.Id} joined the server.");
+            //     ChangeRoleOfGuildUser(user, DefaultUserRole);
+            // };
+            //
+            // Connect().Wait();
         }
 
         public async Task Connect()
@@ -36,7 +46,58 @@ namespace BlackDragonAIAPI.Discord
             await this._client.LoginAsync(TokenType.Bot, this._discordConfig.Token);
             await this._client.StartAsync();
             mre.Wait();
+
+            this._client.UserJoined += socketGuildUser =>
+            {
+                Console.WriteLine($"User joined a server. Guild: {socketGuildUser.Guild.Name}, " +
+                                  $"username: {socketGuildUser.Username}, user id: {socketGuildUser.Id}");
+                if (socketGuildUser.Guild.Id == this._discordConfig.GuildId)
+                {
+                    Console.WriteLine($"User joined The Dragon's Den server: {socketGuildUser.Nickname} " +
+                                      $"with id: {socketGuildUser.Id}");
+                    this.UserJoinedGuild?.Invoke(socketGuildUser);
+                }
+                return Task.CompletedTask;
+            };
+                
             this._isConnected = true;
+            Console.WriteLine("Connected");
+        }
+
+        public async Task ChangeRoleOfGuildUser(IGuildUser guildMember, ulong roleId)
+        {
+            Console.WriteLine("Handling change of role for user");
+            if (!_isConnected)
+            {
+                Console.WriteLine("An attempt was made to change the role of a guild user, " +
+                                  "but the client was not yet connected");
+                return;
+            }
+
+            IRole discordRole;
+            try
+            {
+                discordRole = (await this.GetGuild()).Roles.First(r => r.Id == roleId);
+            }
+            catch (InvalidOperationException)
+            {
+                Console.WriteLine($"No role could be found with id: {roleId}");
+                return;
+            }
+
+            try
+            {
+                
+                await guildMember.AddRoleAsync(discordRole);
+                Console.WriteLine($"Added the role \"{discordRole.Name}\" to user \"{guildMember.Nickname}\" " +
+                                  $"with user id: {guildMember.Id}");
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine($"Something went wrong with adding the role \"{discordRole.Name}\" to " +
+                                  $"user \"{guildMember.Nickname}\" with user id: {guildMember.Id}");
+                Console.WriteLine(e);
+            }
         }
 
         public async Task<IEnumerable<StreamPlanning>> ReadStreamPlannings()
@@ -74,11 +135,41 @@ namespace BlackDragonAIAPI.Discord
 
             var serializedStreamPlannings = SerializeStreamPlanningIntoMessages(streamPlannings);
             var channel = await GetStreamPlanningChannel();
-            var spMessages = await GetStreamPlanningMessages();
-            await channel.DeleteMessagesAsync(spMessages);
-            foreach (var spMessage in serializedStreamPlannings)
+            var spMessages = (await GetStreamPlanningMessages()).OrderBy(sp => sp.CreatedAt);
+            if (serializedStreamPlannings.Count() <= spMessages.Count())
             {
-                await channel.SendMessageAsync(spMessage);
+                if (serializedStreamPlannings.Count() < spMessages.Count())
+                {
+                    var messagesToDelete = spMessages.Skip(serializedStreamPlannings.Count());
+                    spMessages = spMessages.Take(serializedStreamPlannings.Count()).OrderBy(sp => sp.CreatedAt);
+                    await BulkDeleteMessages(channel, messagesToDelete);
+                }
+                
+                // Replace existing messages
+                for (var i = 0; i < serializedStreamPlannings.Count(); i += 2)
+                {
+                    var spMessage = spMessages.ElementAt(i);
+                    var serializedMessage = serializedStreamPlannings.ElementAt(i);
+                    await channel.ModifyMessageAsync(spMessage.Id, mp => 
+                        mp.Content = serializedMessage);
+                }
+            }
+            else
+            {
+                // Delete all old messages and send new messages
+                await BulkDeleteMessages(channel, spMessages);
+                foreach (var spMessage in serializedStreamPlannings)
+                {
+                    await channel.SendMessageAsync(spMessage);
+                }
+            }
+        }
+
+        private static async Task BulkDeleteMessages(SocketTextChannel socketTextChannel, IEnumerable<IMessage> messages)
+        {
+            foreach (var message in messages)
+            {
+                await socketTextChannel.DeleteMessageAsync(message);
             }
         }
 
