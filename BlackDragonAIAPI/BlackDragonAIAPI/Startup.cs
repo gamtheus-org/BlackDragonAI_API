@@ -57,7 +57,7 @@ namespace BlackDragonAIAPI
             services.AddScoped<UserValidator>();
             services.AddScoped<TimedMessageValidator>();
             services.AddScoped<WebhookManager>();
-            // services.AddSingleton<IDiscordManager, DiscordManager>();
+            services.AddSingleton<IDiscordManager, DiscordManager>();
 
             services.AddCors(options =>
             {
