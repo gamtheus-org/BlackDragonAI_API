@@ -16,7 +16,7 @@ namespace BlackDragonAIAPI.Discord
         Task WriteStreamPlanning(IEnumerable<StreamPlanning> streamPlannings);
         Task ShareUpdatedMessage();
 
-        event Action<IGuildUser> UserJoinedGuild;
-        Task ChangeRoleOfGuildUser(IGuildUser guildMember, ulong roleId);
+        // event Action<IGuildUser> UserJoinedGuild;
+        // Task ChangeRoleOfGuildUser(IGuildUser guildMember, ulong roleId);
     }
 }
