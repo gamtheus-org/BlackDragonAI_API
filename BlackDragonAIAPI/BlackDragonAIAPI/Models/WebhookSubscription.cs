@@ -1,6 +1,7 @@
-﻿namespace BlackDragonAIAPI.Models;
-
-public record WebhookSubscription()
+﻿namespace BlackDragonAIAPI.Models
 {
-    public string Url { get; set; }
+    public class WebhookSubscription
+    {
+        public string Url { get; set; }
+    }
 }
