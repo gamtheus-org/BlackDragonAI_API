@@ -8,6 +8,8 @@ services:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_USER: ${MYSQL_USER}
       MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    ports:
+      - 33006:3306
     volumes:
       - blackdragonai-db:/var/lib/mysql
     networks:
