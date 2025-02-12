@@ -16,6 +16,9 @@ services:
   blackdragonai-api:
     image: blackdragonai-api
     container_name: blackdragonai-api
+    depends_on:
+      blackdragonai-mysql:
+        condition: service_started
     environment:
       ASPNETCORE_ENVIRONMENT: Docker
     networks:
@@ -30,6 +33,9 @@ services:
   blackdragonai-bot:
     image: blackdragonai-bot
     container_name: blackdragonai-bot
+    depends_on:
+      blackdragonai-api:
+        condition: service_started
     environment:
       ASPNETCORE_ENVIRONMENT: Docker
     networks:
