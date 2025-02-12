@@ -27,13 +27,13 @@ services:
     networks:
       - reverse-proxy-n
   
-  # blackdragonai-bot:
-  #   image: blackdragonai-bot
-  #   container_name: blackdragonai-bot
-  #   environment:
-  #     ASPNETCORE_ENVIRONMENT: Docker
-  #   networks:
-  #     - reverse-proxy-n
+  blackdragonai-bot:
+    image: blackdragonai-bot
+    container_name: blackdragonai-bot
+    environment:
+      ASPNETCORE_ENVIRONMENT: Docker
+    networks:
+      - reverse-proxy-n
 
 volumes:
   blackdragonai-db:
