@@ -24,7 +24,7 @@ public class AuthController: ControllerBase
         _webhookManager = webhookManager;
     }
     
-    [HttpPost]
+    [HttpGet]
     public async Task<ActionResult> GetAuthUrl()
     {
         if (!IsAuthorized()) return Unauthorized(new UnauthorizedError());

@@ -26,3 +26,14 @@ CREATE TABLE WebhookSubscribers (
     Uri TEXT(255) NOT NULL
 );
 
+
+CREATE TABLE StreamPlannings (
+	Id BIGINT PRIMARY KEY,
+    Date DATETIME NOT NULL,
+    TimeSlot TEXT(255) NOT NULL,
+    Game TEXT(255) NOT NULL,
+    StreamType TEXT(255) NOT NULL,
+    GameType TEXT(255) NOT NULL,
+    TrailUri TEXT(255) NOT NULL
+);
+
