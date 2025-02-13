@@ -1,6 +1,7 @@
-﻿namespace BlackDragonAIAPI.Models;
-
-public class TwitchAuthInformation
+﻿namespace BlackDragonAIAPI.Models
 {
-    public string Url { get; set; }
+    public class TwitchAuthInformation
+    {
+        public string Url { get; set; }
+    }
 }
