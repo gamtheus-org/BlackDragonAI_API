@@ -46,7 +46,7 @@ namespace BlackDragonAIAPI.Controllers
         }
     
         private string GetAuthorizationUrl() =>
-            $"{BaseAuthUrl}?client_id={ClientId}&redirect_uri={RedirectUrl}&response_type=code&scope={GetAuthScopes().Aggregate((scope1, scope2) => $"{scope1}+{scope2}")}";
+            $"{BaseAuthUrl}?client_id={ClientId}&response_type=code&scope={GetAuthScopes().Aggregate((scope1, scope2) => $"{scope1}+{scope2}")}&redirect_uri={RedirectUrl}";
         
         private IEnumerable<string> GetAuthScopes() => new[] {
             "analytics:read:extensions", "analytics:read:games", "bits:read", "channel:edit:commercial", 
