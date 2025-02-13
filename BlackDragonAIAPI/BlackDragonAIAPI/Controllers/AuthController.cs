@@ -41,6 +41,7 @@ namespace BlackDragonAIAPI.Controllers
         public async Task<ActionResult> ProcessTwitchAuthResult()
         {
             var authToken = HttpContext.Request.Query["code"];
+            Console.WriteLine($"Received auth token: {authToken}");
             _webhookManager.SendUpdateNotification("/authorized",authToken.First());
             return Ok("Processing authorization");
         }
