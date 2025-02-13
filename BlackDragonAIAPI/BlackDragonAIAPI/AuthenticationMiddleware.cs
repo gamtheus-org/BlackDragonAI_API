@@ -17,7 +17,7 @@ namespace BlackDragonAIAPI
 {
     public class AuthenticationMiddleware
     {
-        private readonly IEnumerable<string> _routeExemptions = new string[]{"api/users/register", "api/users/login", "api/streamplannings"};
+        private readonly IEnumerable<string> _routeExemptions = new string[]{"api/users/register", "api/users/login", "api/streamplannings", "api/auth/authorized"};
         private readonly RequestDelegate _next;
         private readonly string _secret;
 
