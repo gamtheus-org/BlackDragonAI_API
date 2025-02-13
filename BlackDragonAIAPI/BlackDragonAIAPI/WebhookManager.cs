@@ -39,7 +39,7 @@ namespace BlackDragonAIAPI
         {
             try
             {
-                var context = await _client.PostAsJsonAsync(uri, new StringContent(data));
+                var context = await _client.PostAsync(uri, new StringContent(data));
                 Console.WriteLine("Successful");
             }
             catch (Exception exception)
