@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http;
+using System.Net.Http.Json;
 using System.Threading.Tasks;
 using BlackDragonAIAPI.StorageHandlers;
 
@@ -17,7 +18,7 @@ namespace BlackDragonAIAPI
             this._db = db;
         }
 
-        public async void SendUpdateNotification(string endpoint)
+        public async void SendUpdateNotification(string endpoint, string data = "")
         {
             Console.WriteLine("Starting");
             foreach (var ws in await this._db.GetWebhookSubscribers())
@@ -25,7 +26,7 @@ namespace BlackDragonAIAPI
                 try
                 {
                     Console.WriteLine($"URL: {ws.Uri}");
-                    SendWithoutWaiting(new Uri($"{ws.Uri}{endpoint}"));
+                    SendWithoutWaiting(new Uri($"{ws.Uri}{endpoint}"), data);
                 }
                 catch (Exception)
                 {
@@ -34,11 +35,11 @@ namespace BlackDragonAIAPI
             }
         }
 
-        private async void SendWithoutWaiting(Uri uri)
+        private async void SendWithoutWaiting(Uri uri, string data)
         {
             try
             {
-                var context = await _client.PostAsync(uri, new StringContent(""));
+                var context = await _client.PostAsJsonAsync(uri, new StringContent(data));
                 Console.WriteLine("Successful");
             }
             catch (Exception exception)
