@@ -43,7 +43,7 @@ namespace BlackDragonAIAPI.Controllers
             var authToken = HttpContext.Request.Query["code"];
             Console.WriteLine($"Received auth token: {authToken}");
             _webhookManager.SendUpdateNotification("/authorized",authToken.First());
-            return Ok("Processing authorization");
+            return Ok("Authorized! You can safely leave this page.");
         }
     
         private string GetAuthorizationUrl() =>
