@@ -1,0 +1,55 @@
+version: '3.8'
+services:
+  blackdragonai-mysql:
+    image: mysql:latest
+    container_name: blackdragonai-mysql
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    ports:
+      - 33006:3306
+    volumes:
+      - blackdragonai-db:/var/lib/mysql
+    networks:
+      - reverse-proxy-n
+
+  blackdragonai-api:
+    image: blackdragonai-api
+    container_name: blackdragonai-api
+    depends_on:
+      blackdragonai-mysql:
+        condition: service_started
+    environment:
+      ASPNETCORE_ENVIRONMENT: Docker
+    networks:
+      - reverse-proxy-n
+  
+  blackdragonai-web:
+    image: blackdragonai-web
+    container_name: blackdragonai-web
+    networks:
+      - reverse-proxy-n
+  
+  blackdragonai-bot:
+    image: blackdragonai-bot
+    container_name: blackdragonai-bot
+    restart: on-failure
+    depends_on:
+      blackdragonai-api:
+        condition: service_started
+    environment:
+      ASPNETCORE_ENVIRONMENT: Docker
+    networks:
+      - reverse-proxy-n
+    volumes:
+      - blackdragonai-auth:/app/auth
+
+volumes:
+  blackdragonai-db:
+  blackdragonai-auth:
+
+networks:
+  reverse-proxy-n:
+    external: true
