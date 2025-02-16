@@ -44,7 +44,7 @@ services:
     networks:
       - reverse-proxy-n
     volumes:
-      - blackdragonai-auth:/app
+      - blackdragonai-auth:/app/auth
 
 volumes:
   blackdragonai-db:
