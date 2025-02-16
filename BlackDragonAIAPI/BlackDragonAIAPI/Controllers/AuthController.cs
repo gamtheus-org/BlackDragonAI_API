@@ -52,7 +52,7 @@ namespace BlackDragonAIAPI.Controllers
         private IEnumerable<string> GetAuthScopes() => new[] {
             "analytics:read:extensions", "analytics:read:games", "bits:read", "channel:edit:commercial", 
             "channel:read:hype_train", "channel:read:subscriptions", "clips:edit", "user:edit", "user:edit:broadcast",
-            "user:edit:follows", "user:read:broadcast", "user:read:email"
+            "user:edit:follows", "user:read:broadcast", "user:read:email", "moderator:read:followers"
         };
     
     
