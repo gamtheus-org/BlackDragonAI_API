@@ -36,13 +36,9 @@ namespace BlackDragonAIAPI.StorageHandlers
 
         public async Task<DeathCount> GetDeathCount(string gameId)
         {
-            var deathCount = this._db.DeathCounts
+            return this._db.DeathCounts
                 .AsQueryable()
                 .FirstOrDefault(dc => dc.GameId == gameId);
-            return deathCount ?? new DeathCount()
-            {
-                GameId = gameId
-            };
         }
 
         public async Task<IEnumerable<DeathCount>> GetDeathCounts() => 
