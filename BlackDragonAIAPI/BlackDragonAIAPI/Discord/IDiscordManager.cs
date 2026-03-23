@@ -4,6 +4,8 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Threading.Tasks;
 using BlackDragonAIAPI.Models;
+using Discord;
+using Discord.WebSocket;
 
 namespace BlackDragonAIAPI.Discord
 {
@@ -13,5 +15,8 @@ namespace BlackDragonAIAPI.Discord
         Task<IEnumerable<StreamPlanning>> ReadStreamPlannings();
         Task WriteStreamPlanning(IEnumerable<StreamPlanning> streamPlannings);
         Task ShareUpdatedMessage();
+
+        // event Action<IGuildUser> UserJoinedGuild;
+        // Task ChangeRoleOfGuildUser(IGuildUser guildMember, ulong roleId);
     }
 }

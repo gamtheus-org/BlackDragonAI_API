@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BlackDragonAIAPI.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace BlackDragonAIAPI.StorageHandlers
 {
@@ -17,7 +18,7 @@ namespace BlackDragonAIAPI.StorageHandlers
 
         public async Task<DeathCount> AddDeathCount(DeathCount deathCount)
         {
-            await this._db.DeathCounts.AddAsync(deathCount);
+            this._db.DeathCounts.Add(deathCount);
             await this._db.SaveChangesAsync();
             return await GetDeathCount(deathCount.GameId);
         }
@@ -33,21 +34,21 @@ namespace BlackDragonAIAPI.StorageHandlers
             await this._db.SaveChangesAsync();
         }
 
-        public async Task<DeathCount> GetDeathCount(string gameId) =>
-            await Task.Run(() => this._db.DeathCounts.
-                AsQueryable().
-                FirstOrDefault(dc => dc.GameId.Equals(gameId)));
+        public async Task<DeathCount> GetDeathCount(string gameId)
+        {
+            return this._db.DeathCounts
+                .AsQueryable()
+                .FirstOrDefault(dc => dc.GameId == gameId);
+        }
 
         public async Task<IEnumerable<DeathCount>> GetDeathCounts() => 
-            await Task.Run(() => this._db.DeathCounts);
+            this._db.DeathCounts.ToList();
 
         public async Task DeleteDeathCount(Func<DeathCount, bool> condition)
         {
-            await Task.Run(() =>
-            {
-                var dbDeathCounts = this._db.DeathCounts.AsEnumerable().Where(condition);
-                this._db.RemoveRange(dbDeathCounts);
-            });
+            var dbDeathCounts = this._db.DeathCounts.AsEnumerable().Where(condition);
+            this._db.RemoveRange(dbDeathCounts);
+            await _db.SaveChangesAsync();
         }
     }
 }
