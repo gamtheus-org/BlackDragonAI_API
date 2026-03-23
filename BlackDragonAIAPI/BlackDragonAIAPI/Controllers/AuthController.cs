@@ -49,13 +49,12 @@ namespace BlackDragonAIAPI.Controllers
         private string GetAuthorizationUrl() =>
             $"{BaseAuthUrl}?client_id={ClientId}&response_type=code&scope={GetAuthScopes().Aggregate((scope1, scope2) => $"{scope1}+{scope2}")}&redirect_uri={RedirectUrl}";
         
-        private IEnumerable<string> GetAuthScopes() =>
-        [
+        private IEnumerable<string> GetAuthScopes() => new string[]{
             "analytics:read:extensions", "analytics:read:games", "bits:read", "channel:edit:commercial", 
             "channel:read:hype_train", "channel:read:subscriptions", "clips:edit", "user:edit", "user:edit:broadcast",
             "user:edit:follows", "user:read:broadcast", "user:read:email", "moderator:read:followers",
             "moderator:manage:banned_users", "user:bot"
-        ];
+        };
     
     
         private bool IsAuthorized() => HttpContext.MeetsAuthorizationLevel(EAuthorizationLevel.ADMIN);
