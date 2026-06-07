@@ -43,7 +43,7 @@ namespace BlackDragonAIAPI.StorageHandlers
 
         public async Task<IEnumerable<string>> GetBannedTermsAsync()
         {
-            return await _dbContext.BannedTerms.AsQueryable().Select(bt => bt.Term).ToListAsync<string>();
+            return await _dbContext.BannedTerms.AsQueryable().Select(bt => UnicodeHelper.DecodeWithEncoder(bt.Term)).ToListAsync<string>();
         }
     }
 }
