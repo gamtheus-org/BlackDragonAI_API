@@ -26,3 +26,7 @@ CREATE TABLE WebhookSubscribers (
     Uri TEXT(255) NOT NULL
 );
 
+CREATE TABLE BannedTerms (
+    Term CHAR(255) PRIMARY KEY
+);
+
