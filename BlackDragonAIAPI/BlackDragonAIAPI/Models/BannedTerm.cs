@@ -1,8 +1,9 @@
 using System.ComponentModel.DataAnnotations;
 
-namespace BlackDragonAIAPI.Models;
-
-public record BannedTerm
+namespace BlackDragonAIAPI.Models
 {
-    [Key] public string Term { get; set; }
+    public class BannedTerm
+    {
+        [Key] public string Term { get; set; }
+    }
 }
