@@ -53,6 +53,7 @@ namespace BlackDragonAIAPI
             services.AddScoped<IWebhookSubscriberService, MySqlWebhookSubscriberService>();
             services.AddScoped<IDeathCountsService, MySqlDeathCountsService>();
             services.AddScoped<IStreamPlanningService, MysqlStreamPlanningService>();
+            services.AddScoped<BannedTermService>();
             services.AddScoped<CommandValidator>();
             services.AddScoped<UserValidator>();
             services.AddScoped<TimedMessageValidator>();

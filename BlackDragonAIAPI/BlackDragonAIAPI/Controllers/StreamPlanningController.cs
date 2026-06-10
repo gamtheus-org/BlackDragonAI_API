@@ -64,16 +64,16 @@ namespace BlackDragonAIAPI.Controllers
         [HttpPut("discord/load")]
         public async Task<ActionResult> LoadDiscordPlanning()
         {
-            var discordStreamPlannings = await this._discordManager.ReadStreamPlannings();
-            var dbStreamPlannings = (await this._streamPlanningService.GetStreamPlannings()).ToArray();
-            foreach (var sp in dbStreamPlannings)
-            {
-                await this._streamPlanningService.DeleteStreamPlanningById(sp.Id);
-            }
-            foreach (var sp in discordStreamPlannings)
-            {
-                await this._streamPlanningService.CreateStreamPlanning(sp);
-            }
+            // var discordStreamPlannings = await this._discordManager.ReadStreamPlannings();
+            // var dbStreamPlannings = (await this._streamPlanningService.GetStreamPlannings()).ToArray();
+            // foreach (var sp in dbStreamPlannings)
+            // {
+            //     await this._streamPlanningService.DeleteStreamPlanningById(sp.Id);
+            // }
+            // foreach (var sp in discordStreamPlannings)
+            // {
+            //     await this._streamPlanningService.CreateStreamPlanning(sp);
+            // }
             return NoContent();
         }
 

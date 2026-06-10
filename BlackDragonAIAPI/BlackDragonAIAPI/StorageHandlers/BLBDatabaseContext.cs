@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using BlackDragonAIAPI.Models;
+﻿using BlackDragonAIAPI.Models;
 using Microsoft.EntityFrameworkCore;
 
 namespace BlackDragonAIAPI.StorageHandlers
@@ -18,6 +14,7 @@ namespace BlackDragonAIAPI.StorageHandlers
         public DbSet<WebhookSubscriber> WebhookSubscribers { get; set; }
         public DbSet<DeathCount> DeathCounts { get; set; }
         public DbSet<StreamPlanning> StreamPlannings { get; set; }
+        public DbSet<BannedTerm> BannedTerms { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
