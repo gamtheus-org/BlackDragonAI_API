@@ -3,6 +3,7 @@ services:
   blackdragonai-mysql:
     image: mysql:latest
     container_name: blackdragonai-mysql
+    restart: on-failure
     environment:
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
@@ -18,6 +19,7 @@ services:
   blackdragonai-api:
     image: blackdragonai-api
     container_name: blackdragonai-api
+    restart: on-failure
     depends_on:
       blackdragonai-mysql:
         condition: service_started
@@ -29,6 +31,7 @@ services:
   blackdragonai-web:
     image: blackdragonai-web
     container_name: blackdragonai-web
+    restart: on-failure
     networks:
       - reverse-proxy-n
   
